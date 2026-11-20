@@ -1,79 +1,54 @@
-# SciCore-16 Engineering Report
+# SciCore-16 (v2.0) Engineering Report
 
 ## 1. Executive Summary
-**SciCore-16** is a 16-bit Q8.8 fixed-point scientific calculator System-on-Chip designed in synthesizable Verilog-2001, verified functionally in **SiliconForge**, taken through a full **SkyWater SKY130HD 130 nm RTL-to-GDSII** physical design flow in **OpenROAD**, and integrated onto a **100 × 75 mm 2-layer KiCad PCB** with electrical power-network validation.
+**SciCore-16** is a 16-bit Q8.8 fixed-point scientific calculator System-on-Chip designed in synthesizable Verilog-2001, verified functionally in **SiliconForge** and against an exhaustive **Python golden reference model**, taken through a **SkyWater SKY130HD 130 nm RTL-to-GDSII** physical design flow in **OpenROAD**, and integrated onto a **100 × 75 mm 2-layer KiCad PCB** with a complete schematic, DRC-clean routing, and behavioral power-network simulation.
 
 ---
 
-## 2. RTL Architecture & Synthesis Breakdown
-
-| Module | File | Function | Yosys Cells | Yosys Wires |
-| :--- | :--- | :--- | :---: | :---: |
-| `alu16` | `rtl/arithmetic/alu16.v` | Combinational ADD/SUB/NEG/Logic/Shift | 474 | 464 |
-| `register_bank` | `rtl/memory/register_bank.v` | 4×16-bit 2R1W user memory (`STO`/`RCL`) | 172 | 89 |
-| `multiplier` | `rtl/arithmetic/multiplier.v` | 16-cycle shift-add Q8.8 multiplier | 594 | 425 |
-| `divider` | `rtl/arithmetic/divider.v` | 24-cycle restoring Q8.8 divider | 443 | 308 |
-| `cordic` | `rtl/arithmetic/cordic.v` | 12-iteration Q2.14 circular CORDIC (`sin`/`cos`) | 1,088 | 962 |
-| `sqrt_unit` | `rtl/arithmetic/sqrt_unit.v` | 12-cycle restoring Q8.8 square root | 203 | 118 |
-| `log_exp` | `rtl/arithmetic/log_exp.v` | Range-reduction + 16-entry LUT `ln`/`exp` | 1,161 | 1,108 |
-| `expression_stack` | `rtl/memory/expression_stack.v` | 8×16-bit RPN operand stack | 672 | 523 |
-| `scicore_top` | `rtl/top/scicore_top.v` | Unified command FSM & datapath integration | 456 | 445 |
-| **Total Hierarchy** | | **Complete SciCore-16 SoC** | **5,263** | **4,442** |
+## 2. v2.0 Audit Fixes Implemented
+| Audit ID | Issue | Resolution in v2.0 |
+| :--- | :--- | :--- |
+| **SC-01** | `done` asserted 1 cycle before `expression_stack` commit | Added `COMPLETE` FSM state (`state == 2'd3`) in `scicore_top.v`; `tb_top.v` verifies `result` on exact cycle `done == 1`. |
+| **SC-02** | Missing stack overflow/underflow guards & flags | Expanded `err_flags[4:0] = {stk_ovf, stk_udf, div_zero, domain_err, arith_ovf}`; invalid ops rejected before launching units. |
+| **SC-03** | Empty KiCad schematic (`scicore16_pcb.kicad_sch`) | Populated all 20 component symbols, assigned footprints, and attached 85 net labels matching the routed PCB 1-to-1. |
+| **SC-04** | PCB ↔ RTL interface mismatch | Built synthesizable `keypad_scanner.v`, `display_controller.v`, and `scicore_asic_top.v` + `integration/pin_mapping.csv`. |
+| **SC-06/07/12** | Limited numerical sweep & missing golden model | Added `verification/golden_model.py` (exhaustive CORDIC/SQRT/LN/EXP + 10k randomized MUL/DIV) & `numerical_accuracy_report.md`. |
+| **SC-08/09/10/11** | Hardcoded ORFS paths, minimal SDC, missing CI | Made `config.mk` portable (`SCICORE_ROOT`), added clock uncertainty/transition/load to `constraint.sdc`, added `scripts/run_synthesis.sh` & GitHub Actions CI. |
 
 ---
 
-## 3. Verification Summary
-
-| Testbench | Scope | End Time | Errors | Key Verified Cases |
-| :--- | :--- | :---: | :---: | :--- |
-| `tb_m1.v` | `alu16` | 100 ns | 0 | ADD, SUB, +OVF, ZERO, SHL, ASR, NEG, AND/OR/XOR |
-| `tb_regbank.v` | `register_bank` | 80 ns | 0 | Async reset, 4-reg write, `we` gating, dual-port read |
-| `tb_m2.v` | `multiplier`, `divider` | 1410 ns | 0 | Signed Q8.8 mul/div, rounding, overflow, 1-cycle `div_zero` |
-| `tb_m3.v` | `cordic` | 760 ns | 0 | `0`, `π/6`, `π/4`, `π/2`, `-π/4` — **0 LSB error** |
-| `tb_m4.v` | `sqrt_unit`, `log_exp` | 1110 ns | 0 | `sqrt(0,2,4,-1)`, `ln(0,0.5,1,2,e)`, `exp(-1,0,1,5)` |
-| `tb_top.v` | `scicore_top` | 1490 ns | 0 | `((3+5)*2)/4`, `sqrt(4)`, `sin(π/6)+cos(0)`, `ln(exp(1))`, `STO/RCL` |
+## 3. RTL Synthesis Breakdown (Yosys, v2.0 `scicore_asic_top`)
+- **Full-Chip SoC (`scicore_asic_top` incl. Keypad Scanner + SPI Display Controller + UART + `scicore_top`):** **5,454 cells**, **4,593 wires**, **0 errors, 0 inferred latches**.
+- Core module breakdown: `log_exp` (1,155), `cordic` (1,093), `expression_stack` (672), `multiplier` (598), `alu16` (470), `divider` (442), `sqrt_unit` (203), `register_bank` (172), plus `scicore_top`, `keypad_scanner`, `display_controller`, and `scicore_asic_top`.
 
 ---
 
-## 4. Physical Design Results
-
-### 4.1 Block-Level SCMOS P&R (SiliconForge)
-- **`alu16.mag`:** Compacted `1465 × 135 λ` (`197,775 λ²`, **-72.59% area**, **-49.74% wirelength**), **0 DRC**, **LVS Matched**
-- **`multiplier.mag`:** Compacted `3231 × 240 λ` (`775,440 λ²`, **-82.64% area**, **-39.13% wirelength**), **0 DRC**, **LVS Matched**
-- **`register_bank.mag`:** `1660 × 321 λ` (`532,860 λ²`), **0 DRC**
-- **`divider.mag`:** `5714 × 1098 λ` (`6,273,972 λ²`), **0 DRC**
-
-### 4.2 Full-Chip SKY130HD RTL-to-GDSII (OpenROAD Flow Scripts)
-- **PDK / Corner:** `sky130_fd_sc_hd__tt_025C_1v80` (`1.80 V`, `25 °C`), `10 MHz` (`100 ns`)
-- **Area & Utilization:** `53,041 µm²` active logic area (`44%` utilization), `120,448 µm²` (`0.120 mm²`) total core
-- **Cell Count:** `19,028` placed instances (`601` sequential, `4,538` multi-input comb, `203` inverters, `176` timing repair buffers, `98` clock buffers, `40` clock inverters, `1,612` tap cells, `11,760` filler cells)
-- **Routing:** `167,357 µm` total wirelength (`met1`: `75,876 µm`, `met2`: `75,440 µm`, `met3`: `9,715 µm`, `met4`: `6,324 µm`), `43,328` vias
-- **Signoff Checks:**
-  - Detailed Route DRC: **0 violations**
-  - Antenna Check: **0 net violations, 0 pin violations**
-  - Logical Equivalence (LEC): **Passed**
-  - GDSII Merge (`6_final.gds`, `7.65 MB`): **All LEF cells matched, 0 orphan cells**
-- **Power & PDN IR Drop:**
-  - Total power: **`0.710 mW`** at `1.80 V`
-  - Worst-case VDD IR drop: **`13.4 µV`** (`0.00%`); worst-case VSS bounce: **`13.6 µV`** (`0.00%`)
+## 4. Verification & Numerical Accuracy
+- **6 Directed & Top-Level Testbenches** (`tb_m1.v`, `tb_regbank.v`, `tb_m2.v`, `tb_m3.v`, `tb_m4.v`, `tb_top.v`) — all passed with **0 simulation errors** in SiliconForge (`*.vcd` waveforms archived in `verification/`).
+- **Exhaustive Python Golden Model (`verification/golden_model.py`, seed `20261120`):**
+  - `multiplier`: max `0.50 LSB` (round-to-nearest half-up on magnitude)
+  - `divider`: max `1.00 LSB` (truncation; `-128.0 / -1.0` overflow verified)
+  - `cordic`: max `0.61 LSB` (`sin`), `0.63 LSB` (`cos`) across all 805 Q8.8 angles in `[-π/2, +π/2]`
+  - `sqrt_unit`: max `1.00 LSB` across all 32,768 non-negative Q8.8 inputs
+  - `log_exp`: `ln(x)` max `1.66 LSB` across all 32,767 positive inputs; `exp(x)` max `1.56` (~1.2% relative error near `exp(4.85) ≈ 127.7` due to shift-add `log2(e)` approximation)
 
 ---
 
-## 5. PCB Design & Electrical Simulation (KiCad 10 + SPICE)
-- **Board Geometry:** `100 × 75 mm`, 2-layer FR-4 (`F.Cu` + continuous `B.Cu` GND plane)
-- **Net & Trace Count:** 30 nets, 129 copper segments (`0.50–0.60 mm` power, `0.20–0.25 mm` signal), 16 vias (including 13 GND stitching vias)
-- **DRC Verification:** **0 DRC errors**, **0 unconnected items**, **0 clearance/courtyard violations**
-- **Power Network Transient Simulation (`pcb/simulation/power_network.cir`):**
-  - 5 V USB input steady: `4.9963 V`
-  - 3.3 V I/O LDO steady: `3.2962 V`
-  - 1.8 V SKY130 Core LDO steady (`5 mA` idle): `1.7994 V`
-  - 1.8 V Core dynamic load step (`5 mA → 25 mA`): minimum `1.7970 V` (**`2.40 mV` / `0.13%` droop**)
-  - RC Power-On Reset (`10 kΩ / 100 nF`): `RESET_N` crosses `1.65 V` at **`0.728 ms`**
+## 5. Physical Design & Power Methodology
+- **Block-Level SCMOS P&R (SiliconForge):** `alu16.mag` (`197,775 λ²`, -72.59%, 0 DRC, LVS matched), `multiplier.mag` (`775,440 λ²`, -82.64%, 0 DRC, LVS matched), `register_bank.mag` (0 DRC), `divider.mag` (0 DRC).
+- **Full-Chip Core Macro (SKY130HD, OpenROAD Flow Scripts, `sky130_fd_sc_hd__tt_025C_1v80`, `10 MHz`):**
+  - `53,041 µm²` active logic area (`44%` utilization; `120,448 µm²` total core), `19,028` placed instances
+  - `167,357 µm` wirelength (`met1–met4`), `43,328` vias, **0 DRC**, **0 antenna**, **LEC passed**, `6_final.gds` (`7.65 MB`)
+  - **Power Methodology Disclosure:** `0.710 mW` total power and `13.4 µV` worst-case VDD IR drop were computed via OpenROAD's vectorless default-activity PDNSim flow at `1.80 V` (`tt_025C_1v80`), not VCD-annotated post-layout SPICE.
 
 ---
 
-## 6. Known Limitations & Future Improvements
-1. **Q8.8 Dynamic Range:** Fixed-point Q8.8 (`±128`) overflows for `exp(x > 4.85)` or large products. Upgrading the datapath to **Q16.16** or **32-bit floating-point** is the natural v2 step.
-2. **Pad Ring & I/O Peripherals:** `6_final.gds` is a core-level SKY130HD macro (no ESD pad ring or Caravel wrapper), and keypad/LCD scanning is currently offloaded to the command interface (`cmd_valid/cmd_op/cmd_imm`).
-3. **PCB Fabrication Readiness:** The QFN-64 ASIC footprint (`U1`) uses a logical pin assignment for board-level layout and power-network simulation; physical tapeout would require matching the final packaged die bond-out and ESD pad ring.
-4. **Exhaustive Verification:** Directed unit and top-level tests passed 100%; adding a 10,000-vector randomized Verilator + Python golden-model regression suite is recommended before any real silicon tapeout.
+## 6. PCB Design & Behavioral Power Simulation
+- **KiCad 10 PCB (`100 × 75 mm`, 2-layer):** 20 components + 4× M3 mounting holes, populated schematic (`scicore16_pcb.kicad_sch`, 85 net labels), 30 routed nets, 129 copper segments, 16 vias, continuous `B.Cu` GND plane, **0 DRC errors**, **0 unconnected items**.
+- **Power Simulation Disclosure (`pcb/simulation/power_network.cir`):** Uses simplified behavioral LDO models (output impedance + dropout voltage) rather than manufacturer transistor-level SPICE subcircuits. Steady-state rails: `4.9963 V` (5 V USB), `3.2962 V` (3.3 V I/O), `1.7994 V` (1.8 V core idle) → `1.7970 V` under `25 mA` burst (`2.40 mV` / `0.13%` droop); `RESET_N` releases at `0.728 ms`.
+
+---
+
+## 7. Remaining Scope Boundaries (Pre-Tapeout)
+- `6_final.gds` is a **core-level SKY130HD macro** (`scicore_top`) without an ESD I/O pad ring or foundry bond-out; re-running ORFS with `DESIGN_NAME = scicore_asic_top` and a Caravel/Tiny Tapeout padframe is the next step for physical silicon fabrication.
+- The QFN-64 PCB package pinout (`integration/pin_mapping.csv`) is a logical board-level interface specification until matched to a real packaged die bond-out.

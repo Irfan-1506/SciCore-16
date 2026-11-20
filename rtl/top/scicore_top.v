@@ -1,19 +1,25 @@
-// SciCore-16 M5: Top-Level Scientific Calculator SoC (RPN Datapath + Controller)
+// SciCore-16 v2.0: Top-Level Scientific Calculator Core (RPN Datapath + Controller)
+// Fixes SC-01 (done asserted in COMPLETE state AFTER stack/reg commit)
+// and SC-02 (stack_overflow & stack_underflow guards before execution).
+//
 // Commands (cmd_op[3:0]):
-//   0x0: PUSH  (push cmd_imm)
-//   0x1: CLEAR (clear stack & error flags)
-//   0x2: ADD   (nos + tos)
-//   0x3: SUB   (nos - tos)
-//   0x4: MUL   (nos * tos)
-//   0x5: DIV   (nos / tos)
-//   0x6: NEG   (-tos)
-//   0x7: SQRT  (sqrt(tos))
-//   0x8: SIN   (sin(tos))
-//   0x9: COS   (cos(tos))
-//   0xA: LN    (ln(tos))
-//   0xB: EXP   (exp(tos))
-//   0xC: STO   (reg[cmd_imm[1:0]] <= tos)
-//   0xD: RCL   (push reg[cmd_imm[1:0]])
+//   0x0: PUSH  (push cmd_imm; requires !st_full)
+//   0x1: CLEAR (clear stack & all error flags)
+//   0x2: ADD   (nos + tos; requires stack_depth >= 2)
+//   0x3: SUB   (nos - tos; requires stack_depth >= 2)
+//   0x4: MUL   (nos * tos; requires stack_depth >= 2)
+//   0x5: DIV   (nos / tos; requires stack_depth >= 2)
+//   0x6: NEG   (-tos;      requires stack_depth >= 1)
+//   0x7: SQRT  (sqrt(tos); requires stack_depth >= 1)
+//   0x8: SIN   (sin(tos);  requires stack_depth >= 1)
+//   0x9: COS   (cos(tos);  requires stack_depth >= 1)
+//   0xA: LN    (ln(tos);   requires stack_depth >= 1)
+//   0xB: EXP   (exp(tos);  requires stack_depth >= 1)
+//   0xC: STO   (reg[cmd_imm[1:0]] <= tos; requires stack_depth >= 1)
+//   0xD: RCL   (push reg[cmd_imm[1:0]];   requires !st_full)
+//
+// Error flags (err_flags[4:0]):
+//   [4] stack_overflow  [3] stack_underflow  [2] div_zero  [1] domain_err  [0] arith_overflow
 module scicore_top (
     input         clk,
     input         rst,
@@ -24,7 +30,7 @@ module scicore_top (
     output [3:0]  stack_depth,
     output reg    busy,
     output reg    done,
-    output [2:0]  err_flags
+    output [4:0]  err_flags
 );
     // Stack control
     reg        st_clear;
@@ -86,12 +92,18 @@ module scicore_top (
     wire        le_busy;
     wire        le_done;
 
-    // Controller state
-    reg [1:0]  state; // 0=IDLE, 1=WAIT_UNIT, 2=RCL_PUSH
+    // Controller FSM states:
+    //   2'd0 = IDLE
+    //   2'd1 = WAIT_UNIT  (waiting for multi-cycle arithmetic unit)
+    //   2'd2 = RCL_FETCH  (waiting 1 cycle for register_bank read address)
+    //   2'd3 = COMPLETE   (stack/reg write committed on prior edge -> assert done)
+    reg [1:0]  state;
     reg [3:0]  active_op;
     reg        err_ovf;
     reg        err_dom;
     reg        err_dz;
+    reg        err_stk_udf;
+    reg        err_stk_ovf;
 
     // ALU operand & opcode mux
     assign alu_op = (cmd_op == 4'h2) ? 3'b000 :
@@ -100,7 +112,7 @@ module scicore_top (
     assign alu_b  = tos;
 
     assign result    = tos;
-    assign err_flags = {err_dz, err_dom, err_ovf};
+    assign err_flags = {err_stk_ovf, err_stk_udf, err_dz, err_dom, err_ovf};
 
     // Submodule instantiations
     expression_stack u_stack (
@@ -160,26 +172,28 @@ module scicore_top (
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
-            state     <= 2'd0;
-            active_op <= 4'h0;
-            busy      <= 1'b0;
-            done      <= 1'b0;
-            st_clear  <= 1'b0;
-            st_push   <= 1'b0;
-            st_rep    <= 1'b0;
-            st_pop2   <= 1'b0;
-            st_wdata  <= 16'h0000;
-            rb_we     <= 1'b0;
-            rb_addr   <= 2'b00;
-            mul_start <= 1'b0;
-            div_start <= 1'b0;
-            cor_start <= 1'b0;
-            sq_start  <= 1'b0;
-            le_start  <= 1'b0;
-            le_mode   <= 1'b0;
-            err_ovf   <= 1'b0;
-            err_dom   <= 1'b0;
-            err_dz    <= 1'b0;
+            state       <= 2'd0;
+            active_op   <= 4'h0;
+            busy        <= 1'b0;
+            done        <= 1'b0;
+            st_clear    <= 1'b0;
+            st_push     <= 1'b0;
+            st_rep      <= 1'b0;
+            st_pop2     <= 1'b0;
+            st_wdata    <= 16'h0000;
+            rb_we       <= 1'b0;
+            rb_addr     <= 2'b00;
+            mul_start   <= 1'b0;
+            div_start   <= 1'b0;
+            cor_start   <= 1'b0;
+            sq_start    <= 1'b0;
+            le_start    <= 1'b0;
+            le_mode     <= 1'b0;
+            err_ovf     <= 1'b0;
+            err_dom     <= 1'b0;
+            err_dz      <= 1'b0;
+            err_stk_udf <= 1'b0;
+            err_stk_ovf <= 1'b0;
         end else begin
             // Default 1-cycle pulses low
             done      <= 1'b0;
@@ -198,71 +212,133 @@ module scicore_top (
                 if (cmd_valid) begin
                     active_op <= cmd_op;
                     case (cmd_op)
-                        4'h0: begin // PUSH
-                            st_push  <= 1'b1;
-                            st_wdata <= cmd_imm;
-                            done     <= 1'b1;
+                        4'h0: begin // PUSH (requires !st_full)
+                            if (st_full) begin
+                                err_stk_ovf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                st_push  <= 1'b1;
+                                st_wdata <= cmd_imm;
+                                busy     <= 1'b1;
+                                state    <= 2'd3; // COMPLETE after stack commit
+                            end
                         end
                         4'h1: begin // CLEAR
-                            st_clear <= 1'b1;
-                            err_ovf  <= 1'b0;
-                            err_dom  <= 1'b0;
-                            err_dz   <= 1'b0;
-                            done     <= 1'b1;
+                            st_clear    <= 1'b1;
+                            err_ovf     <= 1'b0;
+                            err_dom     <= 1'b0;
+                            err_dz      <= 1'b0;
+                            err_stk_udf <= 1'b0;
+                            err_stk_ovf <= 1'b0;
+                            busy        <= 1'b1;
+                            state       <= 2'd3;
                         end
-                        4'h2, 4'h3: begin // ADD, SUB
-                            st_pop2  <= 1'b1;
-                            st_wdata <= alu_res;
-                            err_ovf  <= err_ovf | alu_ovf;
-                            done     <= 1'b1;
+                        4'h2, 4'h3: begin // ADD, SUB (requires stack_depth >= 2)
+                            if (stack_depth < 4'd2) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                st_pop2  <= 1'b1;
+                                st_wdata <= alu_res;
+                                err_ovf  <= err_ovf | alu_ovf;
+                                busy     <= 1'b1;
+                                state    <= 2'd3;
+                            end
                         end
-                        4'h6: begin // NEG
-                            st_rep   <= 1'b1;
-                            st_wdata <= alu_res;
-                            err_ovf  <= err_ovf | alu_ovf;
-                            done     <= 1'b1;
+                        4'h6: begin // NEG (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                st_rep   <= 1'b1;
+                                st_wdata <= alu_res;
+                                err_ovf  <= err_ovf | alu_ovf;
+                                busy     <= 1'b1;
+                                state    <= 2'd3;
+                            end
                         end
-                        4'h4: begin // MUL
-                            mul_start <= 1'b1;
-                            busy      <= 1'b1;
-                            state     <= 2'd1;
+                        4'h4: begin // MUL (requires stack_depth >= 2)
+                            if (stack_depth < 4'd2) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                mul_start <= 1'b1;
+                                busy      <= 1'b1;
+                                state     <= 2'd1;
+                            end
                         end
-                        4'h5: begin // DIV
-                            div_start <= 1'b1;
-                            busy      <= 1'b1;
-                            state     <= 2'd1;
+                        4'h5: begin // DIV (requires stack_depth >= 2)
+                            if (stack_depth < 4'd2) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                div_start <= 1'b1;
+                                busy      <= 1'b1;
+                                state     <= 2'd1;
+                            end
                         end
-                        4'h7: begin // SQRT
-                            sq_start <= 1'b1;
-                            busy     <= 1'b1;
-                            state    <= 2'd1;
+                        4'h7: begin // SQRT (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                sq_start <= 1'b1;
+                                busy     <= 1'b1;
+                                state    <= 2'd1;
+                            end
                         end
-                        4'h8, 4'h9: begin // SIN, COS
-                            cor_start <= 1'b1;
-                            busy      <= 1'b1;
-                            state     <= 2'd1;
+                        4'h8, 4'h9: begin // SIN, COS (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                cor_start <= 1'b1;
+                                busy      <= 1'b1;
+                                state     <= 2'd1;
+                            end
                         end
-                        4'hA: begin // LN
-                            le_mode  <= 1'b0;
-                            le_start <= 1'b1;
-                            busy     <= 1'b1;
-                            state    <= 2'd1;
+                        4'hA: begin // LN (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                le_mode  <= 1'b0;
+                                le_start <= 1'b1;
+                                busy     <= 1'b1;
+                                state    <= 2'd1;
+                            end
                         end
-                        4'hB: begin // EXP
-                            le_mode  <= 1'b1;
-                            le_start <= 1'b1;
-                            busy     <= 1'b1;
-                            state    <= 2'd1;
+                        4'hB: begin // EXP (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                le_mode  <= 1'b1;
+                                le_start <= 1'b1;
+                                busy     <= 1'b1;
+                                state    <= 2'd1;
+                            end
                         end
-                        4'hC: begin // STO
-                            rb_addr <= cmd_imm[1:0];
-                            rb_we   <= 1'b1;
-                            done    <= 1'b1;
+                        4'hC: begin // STO (requires stack_depth >= 1)
+                            if (st_empty) begin
+                                err_stk_udf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                rb_addr <= cmd_imm[1:0];
+                                rb_we   <= 1'b1;
+                                busy    <= 1'b1;
+                                state   <= 2'd3;
+                            end
                         end
-                        4'hD: begin // RCL
-                            rb_addr <= cmd_imm[1:0];
-                            busy    <= 1'b1;
-                            state   <= 2'd2;
+                        4'hD: begin // RCL (requires !st_full)
+                            if (st_full) begin
+                                err_stk_ovf <= 1'b1;
+                                done        <= 1'b1;
+                            end else begin
+                                rb_addr <= cmd_imm[1:0];
+                                busy    <= 1'b1;
+                                state   <= 2'd2;
+                            end
                         end
                         default: begin
                             done <= 1'b1;
@@ -274,52 +350,43 @@ module scicore_top (
                     st_pop2  <= 1'b1;
                     st_wdata <= mul_res;
                     err_ovf  <= err_ovf | mul_ovf;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3; // COMPLETE after stack commit
                 end else if ((active_op == 4'h5) && div_done) begin
                     st_pop2  <= 1'b1;
                     st_wdata <= div_res;
                     err_dz   <= err_dz  | div_zero;
                     err_ovf  <= err_ovf | div_ovf;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3;
                 end else if ((active_op == 4'h7) && sq_done) begin
                     st_rep   <= 1'b1;
                     st_wdata <= sq_res;
                     err_dom  <= err_dom | sq_err;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3;
                 end else if ((active_op == 4'h8) && cor_done) begin
                     st_rep   <= 1'b1;
                     st_wdata <= cor_sin;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3;
                 end else if ((active_op == 4'h9) && cor_done) begin
                     st_rep   <= 1'b1;
                     st_wdata <= cor_cos;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3;
                 end else if (((active_op == 4'hA) || (active_op == 4'hB)) && le_done) begin
                     st_rep   <= 1'b1;
                     st_wdata <= le_res;
                     err_dom  <= err_dom | le_err;
                     err_ovf  <= err_ovf | le_ovf;
-                    busy     <= 1'b0;
-                    done     <= 1'b1;
-                    state    <= 2'd0;
+                    state    <= 2'd3;
                 end
             end else if (state == 2'd2) begin
-                // Complete RCL push on next cycle after rb_addr settles
+                // Push register_bank read value, then transition to COMPLETE
                 st_push  <= 1'b1;
                 st_wdata <= rb_rdata_a;
-                busy     <= 1'b0;
-                done     <= 1'b1;
-                state    <= 2'd0;
+                state    <= 2'd3;
+            end else if (state == 2'd3) begin
+                // Stack/register write has now committed -> safe to assert done!
+                busy  <= 1'b0;
+                done  <= 1'b1;
+                state <= 2'd0;
             end
         end
     end

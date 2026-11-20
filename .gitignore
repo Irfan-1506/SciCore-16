@@ -14,3 +14,6 @@ physical_design/1_1_yosys_canonicalize.rtlil
 .DS_Store
 Thumbs.db
 __pycache__/
+
+pcb/.history/
+pcb/temp-freerouting.dsn

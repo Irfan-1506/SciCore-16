@@ -1,0 +1,36 @@
+name: SciCore-16 Verification & Synthesis CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Python Golden Model & Full-Domain Accuracy Sweep
+        run: python3 verification/golden_model.py
+
+      - name: Install Icarus Verilog & Yosys
+        run: sudo apt-get update && sudo apt-get install -y iverilog yosys
+
+      - name: Run RTL Testbenches (Icarus Verilog)
+        run: |
+          iverilog -o /tmp/tb_m1 rtl/arithmetic/alu16.v verification/tb_m1.v && vvp /tmp/tb_m1
+          iverilog -o /tmp/tb_rb rtl/memory/register_bank.v verification/tb_regbank.v && vvp /tmp/tb_rb
+          iverilog -o /tmp/tb_m2 rtl/arithmetic/multiplier.v rtl/arithmetic/divider.v verification/tb_m2.v && vvp /tmp/tb_m2
+          iverilog -o /tmp/tb_m3 rtl/arithmetic/cordic.v verification/tb_m3.v && vvp /tmp/tb_m3
+          iverilog -o /tmp/tb_m4 rtl/arithmetic/sqrt_unit.v rtl/arithmetic/log_exp.v verification/tb_m4.v && vvp /tmp/tb_m4
+          iverilog -o /tmp/tb_top rtl/arithmetic/alu16.v rtl/memory/register_bank.v rtl/arithmetic/multiplier.v rtl/arithmetic/divider.v rtl/arithmetic/cordic.v rtl/arithmetic/sqrt_unit.v rtl/arithmetic/log_exp.v rtl/memory/expression_stack.v rtl/top/scicore_top.v verification/tb_top.v && vvp /tmp/tb_top
+
+      - name: Run Yosys Synthesis Check (Full ASIC Top + I/O Wrapper)
+        run: bash scripts/run_synthesis.sh
