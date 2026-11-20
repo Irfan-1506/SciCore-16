@@ -1,0 +1,135 @@
+$date
+   SiliconForge VLSI Studio
+$end
+$version
+   0.1.0
+$end
+$timescale 1ns $end
+$scope module top $end
+$var wire 1 s0 tb_regbank_clk $end
+$var wire 1 s1 tb_regbank_rst $end
+$var wire 1 s2 tb_regbank_we $end
+$var wire 2 s3 tb_regbank_waddr $end
+$var wire 16 s4 tb_regbank_wdata $end
+$var wire 2 s5 tb_regbank_raddr_a $end
+$var wire 2 s6 tb_regbank_raddr_b $end
+$var wire 16 s7 tb_regbank_rdata_a $end
+$var wire 16 s8 tb_regbank_rdata_b $end
+$var wire 1 s9 tb_regbank_dut_rb_clk $end
+$var wire 1 s10 tb_regbank_dut_rb_rst $end
+$var wire 1 s11 tb_regbank_dut_rb_we $end
+$var wire 2 s12 tb_regbank_dut_rb_waddr $end
+$var wire 16 s13 tb_regbank_dut_rb_wdata $end
+$var wire 2 s14 tb_regbank_dut_rb_raddr_a $end
+$var wire 2 s15 tb_regbank_dut_rb_raddr_b $end
+$var wire 16 s16 tb_regbank_dut_rb_rdata_a $end
+$var wire 16 s17 tb_regbank_dut_rb_rdata_b $end
+$var wire 16 s18 tb_regbank_dut_rb_r0 $end
+$var wire 16 s19 tb_regbank_dut_rb_r1 $end
+$var wire 16 s20 tb_regbank_dut_rb_r2 $end
+$var wire 16 s21 tb_regbank_dut_rb_r3 $end
+$upscope $end
+$enddefinitions $end
+#0
+0s0
+1s1
+0s2
+b00 s3
+b0000000000000000 s4
+b00 s5
+b01 s6
+b0000000000000000 s7
+b0000000000000000 s8
+0s9
+1s10
+0s11
+b00 s12
+b0000000000000000 s13
+b00 s14
+b01 s15
+b0000000000000000 s16
+b0000000000000000 s17
+b0000000000000000 s18
+b0000000000000000 s19
+b0000000000000000 s20
+b0000000000000000 s21
+#10
+0s1
+1s2
+b0000000100000000 s4
+0s10
+1s11
+b0000000100000000 s13
+#15
+1s0
+b0000000100000000 s7
+1s9
+b0000000100000000 s16
+b0000000100000000 s18
+#20
+0s0
+b01 s3
+b0000001010000000 s4
+0s9
+b01 s12
+b0000001010000000 s13
+#25
+1s0
+b0000001010000000 s8
+1s9
+b0000001010000000 s17
+b0000001010000000 s19
+#30
+0s0
+b10 s3
+b1111111100000000 s4
+0s9
+b10 s12
+b1111111100000000 s13
+#35
+1s0
+1s9
+b1111111100000000 s20
+#40
+0s0
+b11 s3
+b0000001110000000 s4
+0s9
+b11 s12
+b0000001110000000 s13
+#45
+1s0
+1s9
+b0000001110000000 s21
+#50
+0s0
+0s2
+b1011111011101111 s4
+0s9
+0s11
+b1011111011101111 s13
+#55
+1s0
+1s9
+#60
+0s0
+b10 s5
+b11 s6
+b1111111100000000 s7
+b0000001110000000 s8
+0s9
+b10 s14
+b11 s15
+b1111111100000000 s16
+b0000001110000000 s17
+#70
+1s1
+b0000000000000000 s7
+b0000000000000000 s8
+1s10
+b0000000000000000 s16
+b0000000000000000 s17
+b0000000000000000 s18
+b0000000000000000 s19
+b0000000000000000 s20
+b0000000000000000 s21

@@ -1,0 +1,23 @@
+# SciCore-16 Yosys Synthesis Check (M1 + M2)
+read_verilog rtl/arithmetic/alu16.v
+read_verilog rtl/memory/register_bank.v
+read_verilog rtl/arithmetic/multiplier.v
+read_verilog rtl/arithmetic/divider.v
+
+synth -top alu16
+stat
+design -reset
+
+read_verilog rtl/memory/register_bank.v
+synth -top register_bank
+stat
+design -reset
+
+read_verilog rtl/arithmetic/multiplier.v
+synth -top multiplier
+stat
+design -reset
+
+read_verilog rtl/arithmetic/divider.v
+synth -top divider
+stat

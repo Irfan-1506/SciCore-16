@@ -1,0 +1,47 @@
+* SciCore-16 PCB Power Network & Reset Startup Simulation (ngspice)
+* Models:
+*   - 5V USB input ramp (0 -> 5V in 50us)
+*   - 3.3V I/O LDO rail (U2: AMS1117-3.3) with 10uF bulk + 100nF decoupling
+*   - 1.8V SKY130 Core LDO rail (U3: AMS1117-1.8) with 10uF bulk + 100nF decoupling
+*   - Dynamic ASIC core load step (5mA idle -> 25mA active CORDIC/MUL burst at 2ms)
+*   - RC Power-On Reset (R1=10k, C6=100nF -> tau = 1ms)
+
+.title SciCore-16 Power Integrity & Reset Startup
+
+* 5V USB Input Supply (50us startup ramp)
+Vusb v5v_raw 0 PWL(0 0 50u 5.0 5m 5.0)
+Rusb v5v_raw v5v 0.15
+C1 v5v 0 10u IC=0
+
+* 3.3V I/O Regulator (behavioral LDO with 150mOhm output impedance & 1.1V dropout)
+B_ldo33 v3v3_int 0 V = min(3.3, max(0, V(v5v) - 1.1))
+R_ldo33 v3v3_int v3v3 0.15
+C2 v3v3 0 10u IC=0
+C5 v3v3 0 100n IC=0
+R_io_load v3v3 0 165 ; ~20mA LCD + I/O nominal load
+
+* 1.8V SKY130 Core Regulator (fed from 3.3V rail)
+B_ldo18 v1v8_int 0 V = min(1.8, max(0, V(v3v3) - 1.0))
+R_ldo18 v1v8_int v1v8 0.12
+C3 v1v8 0 10u IC=0
+C4 v1v8 0 100n IC=0
+* Core load: 5mA quiescent + 20mA dynamic pulse at t=2ms (width 500us)
+I_core_load v1v8 0 PULSE(5m 25m 2m 1u 1u 500u 5m)
+
+* Active-Low RC Reset Circuit (R1=10k to 3.3V, C6=100nF to GND)
+R1 v3v3 reset_n 10k
+C6 reset_n 0 100n IC=0
+
+.tran 10u 4m UIC
+
+.control
+run
+meas tran v3v3_steady FIND v(v3v3) AT=1.5m
+meas tran v1v8_steady FIND v(v1v8) AT=1.5m
+meas tran v1v8_min_droop MIN v(v1v8) FROM=1.9m TO=2.6m
+meas tran t_reset_release WHEN v(reset_n)=1.65 RISE=1
+echo "=== SciCore-16 Power & Reset Metrics ==="
+print v3v3_steady v1v8_steady v1v8_min_droop t_reset_release
+quit
+.endc
+.end

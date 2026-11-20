@@ -1,0 +1,16 @@
+# KiCad backups and lock files
+pcb/.kicad_mcp_backups/
+pcb/*-backups/
+*.kicad_pcb-bak
+*.kicad_sch-bak
+~*.lck
+
+# Redundant intermediate OpenROAD binary databases (final 6_final.gds/def/v/spef/sdc are tracked)
+physical_design/*.odb
+physical_design/6_1_merged.gds
+physical_design/1_1_yosys_canonicalize.rtlil
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+__pycache__/

@@ -1,0 +1,12 @@
+(kicad_sch
+	(version 20260101)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "e92f29f3-d312-43ea-9282-d3f136041baa")
+	(paper "A4")
+	(title_block
+		(title "SciCore-16 Scientific Calculator ASIC Board")
+	)
+	(lib_symbols
+	)
+)
