@@ -44,7 +44,7 @@
 ---
 
 ## 6. PCB Design & Behavioral Power Simulation
-- **KiCad 10 PCB (`100 × 75 mm`, 2-layer):** 20 components + 4× M3 mounting holes, populated schematic (`scicore16_pcb.kicad_sch`, 85 net labels), 30 routed nets, 129 copper segments, 16 vias, continuous `B.Cu` GND plane, **0 DRC errors**, **0 unconnected items**.
+- **KiCad 10 Handheld Calculator PCB (`85 × 155 mm`, 2-layer portrait):** 51 components (including all **32 tactile key switches `K1–K32`** in a 4×8 matrix with silkscreen key legends, 128×64 SPI LCD header, `SciCore-16` QFN-64 ASIC, dual 3.3 V / 1.8 V LDOs, 10 MHz oscillator, UART debug, and status LEDs) + 4× M3 mounting holes, populated schematic (`scicore16_pcb.kicad_sch`), 30 routed nets, **296 copper segments**, **54 vias**, `B.Cu` GND plane under electronics, **0 DRC errors**, **0 unconnected items**.
 - **Power Simulation Disclosure (`pcb/simulation/power_network.cir`):** Uses simplified behavioral LDO models (output impedance + dropout voltage) rather than manufacturer transistor-level SPICE subcircuits. Steady-state rails: `4.9963 V` (5 V USB), `3.2962 V` (3.3 V I/O), `1.7994 V` (1.8 V core idle) → `1.7970 V` under `25 mA` burst (`2.40 mV` / `0.13%` droop); `RESET_N` releases at `0.728 ms`.
 
 ---

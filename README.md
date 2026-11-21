@@ -79,8 +79,9 @@ RPN stack commands on `cmd_op[3:0]` (pulsed with `cmd_valid = 1` when `busy == 0
   - **0 detailed-route DRC**, **0 antenna violations**, **LEC Passed**, `6_final.gds` (`7.65 MB`)
   - Vectorless PDNSim IR-drop @ `1.80 V`: `0.710 mW` estimated power, `13.4 µV` worst-case VDD IR drop (`0.00%`)
 
-### 3. Custom 2-Layer KiCad PCB (`100 × 75 mm`) & Power Simulation
-- **Schematic + Routed Layout:** 20 components + 4× M3 mounting holes, 85 schematic net labels, 30 routed nets, 129 copper segments, 16 vias, continuous `B.Cu` GND plane
+### 3. Custom 2-Layer Handheld Calculator PCB (`85 × 155 mm`) & Power Simulation
+- **Handheld Form Factor:** Portrait calculator layout with 128×64 SPI LCD at top, `SciCore-16` QFN-64 ASIC + dual LDOs (3.3 V / 1.8 V) + 10 MHz osc + UART in middle, and **32 tactile key switches (`K1–K32`, 4×8 matrix) with silkscreen key legends** (`SIN COS TAN SQRT`, `LN EXP NEG PI`, `STO RCL CLR DEL`, `0–9 + − * / . ENT =`) across the lower keypad zone
+- **Schematic + Routed Layout:** 51 components + 4× M3 mounting holes, 30 routed nets, **296 copper segments**, **54 vias**, `B.Cu` GND plane under electronics
 - **KiCad DRC:** **0 DRC errors**, **0 unconnected items**
 - **Simplified Behavioral Power Network Simulation (`pcb/simulation/power_network.cir`):** `3.2962 V` I/O rail, `1.7994 V` core idle → `1.7970 V` under `25 mA` burst (`2.40 mV` / `0.13%` droop), `RESET_N` releases at `0.728 ms`
 
