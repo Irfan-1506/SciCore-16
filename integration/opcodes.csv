@@ -1,0 +1,17 @@
+cmd_op_hex,mnemonic,arity,latency_cycles,error_policy,description
+0x0,PUSH,0->1,2,no_stack_change_on_ovf,Push cmd_imm onto RPN stack
+0x1,CLEAR,N->0,2,clears_all_errors,Clear stack pointer and all error flags
+0x2,ADD,2->1,2,saturate_on_ovf,Signed Q8.8 nos + tos (saturating)
+0x3,SUB,2->1,2,saturate_on_ovf,Signed Q8.8 nos - tos (saturating)
+0x4,MUL,2->1,19,saturate_on_ovf,16-cycle shift-add Q8.8 nos * tos (saturating)
+0x5,DIV,2->1,27,no_change_on_dz_sat_ovf,24-cycle restoring Q8.8 nos / tos
+0x6,NEG,1->1,2,saturate_on_ovf,Signed negate -tos (saturating -128 -> +127.996)
+0x7,SQRT,1->1,15,no_change_on_dom,12-cycle restoring sqrt(tos)
+0x8,SIN,1->1,15,no_change_on_dom,12-iter CORDIC sin(tos) for |tos| <= pi
+0x9,COS,1->1,15,no_change_on_dom,12-iter CORDIC cos(tos) for |tos| <= pi
+0xA,LN,1->1,4..12,no_change_on_dom,Natural log ln(tos) for tos > 0
+0xB,EXP,1->1,4,saturate_on_ovf,Exponential exp(tos) (32-LUT + 14-bit log2e)
+0xC,STO,1->1,2,no_change_on_udf,Store tos into register_bank[cmd_imm[1:0]]
+0xD,RCL,0->1,3,no_change_on_ovf,Push register_bank[cmd_imm[1:0]] onto stack
+0xE,TAN,1->1,40,no_change_on_dom_or_dz,Micro-sequence: CORDIC(tos) then DIV(sin, cos)
+0xF,PUSH_PI,0->1,2,no_change_on_ovf,Push Q8.8 pi constant (0x0324 = 3.140625)

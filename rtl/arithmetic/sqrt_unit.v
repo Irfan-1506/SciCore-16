@@ -12,7 +12,9 @@ module sqrt_unit (
     output reg    done
 );
     reg [23:0] rad;
+    /* verilator lint_off UNUSEDSIGNAL */
     reg [13:0] rem;
+    /* verilator lint_on UNUSEDSIGNAL */
     reg [11:0] root;
     reg [3:0]  cnt;
 

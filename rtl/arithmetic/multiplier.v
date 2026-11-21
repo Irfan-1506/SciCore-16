@@ -1,5 +1,6 @@
-// SciCore-16 M2: Signed Q8.8 Iterative Shift-Add Multiplier (16-cycle)
-// Rounding policy: round-to-nearest (half-up on magnitude before sign restore)
+// SciCore-16 v2.1: Signed Q8.8 Iterative Shift-Add Multiplier (16-cycle, Saturating)
+// Rounding policy: symmetric round-to-nearest (half-up on magnitude before sign restore)
+// Overflow policy (Task 1.3): saturates to 0x7FFF (+127.996) or 0x8000 (-128.0) and sets overflow=1.
 module multiplier (
     input         clk,
     input         rst,
@@ -19,10 +20,13 @@ module multiplier (
 
     wire [15:0] mag_a;
     wire [15:0] mag_b;
+    /* verilator lint_off UNUSEDSIGNAL */
     wire [31:0] acc_rounded;
+    /* verilator lint_on UNUSEDSIGNAL */
     wire [23:0] scaled_mag;
     wire        ovf_pos;
     wire        ovf_neg;
+    wire        ovf_any;
 
     assign mag_a       = a[15] ? (16'h0000 - a) : a;
     assign mag_b       = b[15] ? (16'h0000 - b) : b;
@@ -30,6 +34,7 @@ module multiplier (
     assign scaled_mag  = acc_rounded[31:8];
     assign ovf_pos     = (!res_sign) && (scaled_mag > 24'h007FFF);
     assign ovf_neg     = (res_sign)  && (scaled_mag > 24'h008000);
+    assign ovf_any     = ovf_pos || ovf_neg;
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
@@ -61,8 +66,12 @@ module multiplier (
                     mplier <= {1'b0, mplier[15:1]};
                     cnt    <= cnt - 5'd1;
                 end else begin
-                    result   <= res_sign ? (16'h0000 - scaled_mag[15:0]) : scaled_mag[15:0];
-                    overflow <= ovf_pos || ovf_neg;
+                    if (ovf_any) begin
+                        result <= res_sign ? 16'h8000 : 16'h7FFF;
+                    end else begin
+                        result <= res_sign ? (16'h0000 - scaled_mag[15:0]) : scaled_mag[15:0];
+                    end
+                    overflow <= ovf_any;
                     busy     <= 1'b0;
                     done     <= 1'b1;
                 end
