@@ -1,0 +1,166 @@
+OpenROAD unknown 
+Features included (+) or not (-): -GPU +GUI
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lef/sky130_fd_sc_hd.tlef, created 13 layers, 25 vias
+[INFO ODB-0227] LEF file: /OpenROAD-flow-scripts/flow/platforms/sky130hd/lef/sky130_fd_sc_hd_merged.lef, created 441 library cells
+[WARNING STA-1650] /work/physical_design/6_final.spef line 34080, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 36150, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 53614, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 53623, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 113283, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 145961, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 145971, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 202178, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 254229, net ANTENNA_2 not found.
+[WARNING STA-1648] /work/physical_design/6_final.spef line 264616, instance ANTENNA_1:DIODE not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264659, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264712, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264787, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264830, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264888, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264958, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 264963, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 265048, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 265069, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 265070, net ANTENNA_1 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 265202, net ANTENNA_1 not found.
+[WARNING STA-1648] /work/physical_design/6_final.spef line 266162, instance ANTENNA_2:DIODE not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266191, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266243, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266244, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266397, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266434, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266533, net ANTENNA_2 not found.
+[WARNING STA-1650] /work/physical_design/6_final.spef line 266547, net ANTENNA_2 not found.
+=== SETUP TIMING SUMMARY ===
+wns max 0.00
+tns max 0.00
+worst slack max 73.41
+=== HOLD TIMING SUMMARY ===
+worst slack min -0.01
+=== CRITICAL SETUP PATH ===
+[WARNING STA-0168] unknown field nets.
+Startpoint: cmd_op[2] (input port clocked by clk)
+Endpoint: st_wdata[4]$_DFFE_PP0P_
+          (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: max
+
+      Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------
+                       0.0000    0.0000   clock clk (rise edge)
+                       0.0000    0.0000   clock network delay (propagated)
+                      20.0000   20.0000 ^ input external delay
+   0.0038    0.0000    0.0000   20.0000 ^ cmd_op[2] (in)
+             0.0001    0.0000   20.0000 ^ input20/A (sky130_fd_sc_hd__buf_1)
+   0.0593    0.6826    0.5074   20.5074 ^ input20/X (sky130_fd_sc_hd__buf_1)
+             0.6826    0.0023   20.5098 ^ _08188_/A (sky130_fd_sc_hd__nand2_1)
+   0.0131    0.2046    0.2362   20.7459 v _08188_/Y (sky130_fd_sc_hd__nand2_1)
+             0.2046    0.0003   20.7462 v _08190_/A (sky130_fd_sc_hd__or2_2)
+   0.0031    0.0547    0.3476   21.0938 v _08190_/X (sky130_fd_sc_hd__or2_2)
+             0.0547    0.0001   21.0939 v place314/A (sky130_fd_sc_hd__buf_4)
+   0.1318    0.1669    0.2485   21.3424 v place314/X (sky130_fd_sc_hd__buf_4)
+             0.1707    0.0200   21.3625 v _10453_/B (sky130_fd_sc_hd__nand2_1)
+   0.0021    0.0800    0.1050   21.4674 ^ _10453_/Y (sky130_fd_sc_hd__nand2_1)
+             0.0800    0.0000   21.4675 ^ _10454_/B1_N (sky130_fd_sc_hd__a21boi_0)
+   0.0219    0.6884    0.5764   22.0439 ^ _10454_/Y (sky130_fd_sc_hd__a21boi_0)
+             0.6884    0.0008   22.0447 ^ _13704_/A (sky130_fd_sc_hd__ha_1)
+   0.0023    0.0468    0.2363   22.2810 ^ _13704_/SUM (sky130_fd_sc_hd__ha_1)
+             0.0468    0.0001   22.2811 ^ _08378_/B_N (sky130_fd_sc_hd__nor2b_1)
+   0.0021    0.0707    0.1091   22.3902 ^ _08378_/Y (sky130_fd_sc_hd__nor2b_1)
+             0.0707    0.0000   22.3902 ^ _08379_/A2 (sky130_fd_sc_hd__o21ai_0)
+   0.0062    0.0993    0.1040   22.4943 v _08379_/Y (sky130_fd_sc_hd__o21ai_0)
+             0.0993    0.0002   22.4944 v _08381_/A2 (sky130_fd_sc_hd__a21o_1)
+   0.0153    0.0838    0.2454   22.7398 v _08381_/X (sky130_fd_sc_hd__a21o_1)
+             0.0838    0.0006   22.7404 v _08576_/A1 (sky130_fd_sc_hd__a2111oi_0)
+   0.0117    0.8565    0.7639   23.5043 ^ _08576_/Y (sky130_fd_sc_hd__a2111oi_0)
+             0.8565    0.0006   23.5049 ^ _08636_/A (sky130_fd_sc_hd__nor3_1)
+   0.0096    0.1867    0.2129   23.7178 v _08636_/Y (sky130_fd_sc_hd__nor3_1)
+             0.1867    0.0004   23.7183 v _08642_/B (sky130_fd_sc_hd__nor3_1)
+   0.0064    0.2377    0.2846   24.0028 ^ _08642_/Y (sky130_fd_sc_hd__nor3_1)
+             0.2377    0.0002   24.0030 ^ _08701_/A2 (sky130_fd_sc_hd__o21ai_0)
+   0.0038    0.0759    0.1226   24.1256 v _08701_/Y (sky130_fd_sc_hd__o21ai_0)
+             0.0759    0.0001   24.1257 v _08702_/B (sky130_fd_sc_hd__nand2b_1)
+   0.0090    0.1042    0.1199   24.2456 ^ _08702_/Y (sky130_fd_sc_hd__nand2b_1)
+             0.1042    0.0002   24.2458 ^ _13331_/A2 (sky130_fd_sc_hd__a21o_1)
+   0.0051    0.0556    0.1351   24.3810 ^ _13331_/X (sky130_fd_sc_hd__a21o_1)
+             0.0556    0.0002   24.3812 ^ _13332_/A2 (sky130_fd_sc_hd__a21o_1)
+   0.0081    0.0793    0.1388   24.5200 ^ _13332_/X (sky130_fd_sc_hd__a21o_1)
+             0.0793    0.0004   24.5204 ^ _13439_/CIN (sky130_fd_sc_hd__fa_1)
+   0.0080    0.1026    0.4450   24.9654 v _13439_/SUM (sky130_fd_sc_hd__fa_1)
+             0.1026    0.0001   24.9655 v _08214_/A (sky130_fd_sc_hd__and3_1)
+   0.0049    0.0458    0.1747   25.1401 v _08214_/X (sky130_fd_sc_hd__and3_1)
+             0.0458    0.0001   25.1402 v _08346_/A1 (sky130_fd_sc_hd__o21ai_1)
+   0.0565    1.0413    0.8123   25.9525 ^ _08346_/Y (sky130_fd_sc_hd__o21ai_1)
+             1.0413    0.0053   25.9578 ^ _08421_/A1 (sky130_fd_sc_hd__a21oi_1)
+   0.0048    0.1864    0.1725   26.1302 v _08421_/Y (sky130_fd_sc_hd__a21oi_1)
+             0.1864    0.0002   26.1304 v _08436_/A2 (sky130_fd_sc_hd__o221ai_1)
+   0.0033    0.2129    0.2301   26.3605 ^ _08436_/Y (sky130_fd_sc_hd__o221ai_1)
+             0.2129    0.0001   26.3606 ^ _08437_/A2 (sky130_fd_sc_hd__o21ai_0)
+   0.0070    0.2021    0.1501   26.5107 v _08437_/Y (sky130_fd_sc_hd__o21ai_0)
+             0.2021    0.0003   26.5110 v _08449_/A2 (sky130_fd_sc_hd__a31oi_1)
+   0.0026    0.1204    0.2112   26.7222 ^ _08449_/Y (sky130_fd_sc_hd__a31oi_1)
+             0.1204    0.0001   26.7223 ^ st_wdata[4]$_DFFE_PP0P_/D (sky130_fd_sc_hd__dfrtp_1)
+                                26.7223   data arrival time
+
+                     100.0000  100.0000   clock clk (rise edge)
+                       0.7018  100.7018   clock network delay (propagated)
+                      -0.5000  100.2018   clock uncertainty
+                       0.0000  100.2018   clock reconvergence pessimism
+                               100.2018 ^ st_wdata[4]$_DFFE_PP0P_/CLK (sky130_fd_sc_hd__dfrtp_1)
+                      -0.0745  100.1274   library setup time
+                               100.1274   data required time
+-------------------------------------------------------------------------------
+                               100.1274   data required time
+                               -26.7223   data arrival time
+-------------------------------------------------------------------------------
+                                73.4051   slack (MET)
+
+
+=== CRITICAL HOLD PATH ===
+Startpoint: u_div.divisor[12]$_DFFE_PP0P_
+            (rising edge-triggered flip-flop clocked by clk)
+Endpoint: u_div.divisor[12]$_DFFE_PP0P_
+          (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+    Delay      Time   Description
+-------------------------------------------------------------
+   0.0000    0.0000   clock clk (rise edge)
+   0.6752    0.6752   clock network delay (propagated)
+   0.0000    0.6752 ^ u_div.divisor[12]$_DFFE_PP0P_/CLK (sky130_fd_sc_hd__dfrtp_1)
+   0.3483    1.0235 ^ u_div.divisor[12]$_DFFE_PP0P_/Q (sky130_fd_sc_hd__dfrtp_1)
+   0.0468    1.0704 v _12733_/Y (sky130_fd_sc_hd__nand2_1)
+   0.0596    1.1300 ^ _12734_/Y (sky130_fd_sc_hd__o21ai_0)
+   0.0001    1.1300 ^ u_div.divisor[12]$_DFFE_PP0P_/D (sky130_fd_sc_hd__dfrtp_1)
+             1.1300   data arrival time
+
+   0.0000    0.0000   clock clk (rise edge)
+   0.6752    0.6752   clock network delay (propagated)
+   0.5000    1.1752   clock uncertainty
+   0.0000    1.1752   clock reconvergence pessimism
+             1.1752 ^ u_div.divisor[12]$_DFFE_PP0P_/CLK (sky130_fd_sc_hd__dfrtp_1)
+  -0.0369    1.1383   library hold time
+             1.1383   data required time
+-------------------------------------------------------------
+             1.1383   data required time
+            -1.1300   data arrival time
+-------------------------------------------------------------
+            -0.0083   slack (VIOLATED)
+
+
+=== VECTORLESS POWER SUMMARY (DEFAULT ACTIVITY, NOT VCD) ===
+[WARNING STA-2402] power activity propagation through registers did not converge after 50 passes.
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential           2.6879e-04 2.3016e-05 8.7364e-09 2.9182e-04  33.6%
+Combinational        9.0017e-05 1.8462e-04 2.0527e-08 2.7466e-04  31.6%
+Clock                1.7868e-04 1.2435e-04 1.3162e-09 3.0303e-04  34.9%
+Macro                0.0000e+00 0.0000e+00 0.0000e+00 0.0000e+00   0.0%
+Pad                  0.0000e+00 0.0000e+00 0.0000e+00 0.0000e+00   0.0%
+----------------------------------------------------------------
+Total                5.3749e-04 3.3199e-04 3.0579e-08 8.6952e-04 100.0%
+                          61.8%      38.2%       0.0%

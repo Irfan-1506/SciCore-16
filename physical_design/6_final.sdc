@@ -6,6 +6,8 @@ current_design scicore_top
 # Timing Constraints
 ###############################################################################
 create_clock -name clk -period 100.0000 [get_ports {clk}]
+set_clock_transition 0.2000 [get_clocks {clk}]
+set_clock_uncertainty 0.5000 clk
 set_propagated_clock [get_clocks {clk}]
 set_input_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {cmd_imm[0]}]
 set_input_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {cmd_imm[10]}]
@@ -34,6 +36,8 @@ set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {done}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {err_flags[0]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {err_flags[1]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {err_flags[2]}]
+set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {err_flags[3]}]
+set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {err_flags[4]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {result[0]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {result[10]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {result[11]}]
@@ -54,9 +58,38 @@ set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {stack_
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {stack_depth[1]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {stack_depth[2]}]
 set_output_delay 20.0000 -clock [get_clocks {clk}] -add_delay [get_ports {stack_depth[3]}]
+set_false_path\
+    -from [get_ports {rst}]
 ###############################################################################
 # Environment
 ###############################################################################
+set_load -pin_load 0.0500 [get_ports {busy}]
+set_load -pin_load 0.0500 [get_ports {done}]
+set_load -pin_load 0.0500 [get_ports {err_flags[4]}]
+set_load -pin_load 0.0500 [get_ports {err_flags[3]}]
+set_load -pin_load 0.0500 [get_ports {err_flags[2]}]
+set_load -pin_load 0.0500 [get_ports {err_flags[1]}]
+set_load -pin_load 0.0500 [get_ports {err_flags[0]}]
+set_load -pin_load 0.0500 [get_ports {result[15]}]
+set_load -pin_load 0.0500 [get_ports {result[14]}]
+set_load -pin_load 0.0500 [get_ports {result[13]}]
+set_load -pin_load 0.0500 [get_ports {result[12]}]
+set_load -pin_load 0.0500 [get_ports {result[11]}]
+set_load -pin_load 0.0500 [get_ports {result[10]}]
+set_load -pin_load 0.0500 [get_ports {result[9]}]
+set_load -pin_load 0.0500 [get_ports {result[8]}]
+set_load -pin_load 0.0500 [get_ports {result[7]}]
+set_load -pin_load 0.0500 [get_ports {result[6]}]
+set_load -pin_load 0.0500 [get_ports {result[5]}]
+set_load -pin_load 0.0500 [get_ports {result[4]}]
+set_load -pin_load 0.0500 [get_ports {result[3]}]
+set_load -pin_load 0.0500 [get_ports {result[2]}]
+set_load -pin_load 0.0500 [get_ports {result[1]}]
+set_load -pin_load 0.0500 [get_ports {result[0]}]
+set_load -pin_load 0.0500 [get_ports {stack_depth[3]}]
+set_load -pin_load 0.0500 [get_ports {stack_depth[2]}]
+set_load -pin_load 0.0500 [get_ports {stack_depth[1]}]
+set_load -pin_load 0.0500 [get_ports {stack_depth[0]}]
 ###############################################################################
 # Design Rules
 ###############################################################################
