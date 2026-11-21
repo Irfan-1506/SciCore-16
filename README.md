@@ -6,6 +6,24 @@ A complete **RTL-to-GDSII digital ASIC** and **custom 2-layer KiCad PCB** implem
 
 ---
 
+## Visual Showcase
+
+### 3D Handheld Calculator PCB (`85 × 155 mm`, 32 Keys, KiCad 10 Raytraced)
+| Isometric 3D View | Top 3D View (32-Key Matrix) | Bottom 3D View (`B.Cu` GND & `ROW0–3`) |
+| :---: | :---: | :---: |
+| ![3D PCB Isometric](documentation/images/pcb_3d_iso.png) | ![3D PCB Top](documentation/images/pcb_3d_top.png) | ![3D PCB Bottom](documentation/images/pcb_3d_bottom.png) |
+
+### SKY130HD 130 nm Routed ASIC Layout (OpenROAD — `6_final.odb` / `6_final.gds`)
+![SKY130HD Routed ASIC Layout](documentation/images/ic_layout_sky130_openroad.png)
+
+### SiliconForge SCMOS Block Layout (`alu16.mag` — 0 DRC, LVS Matched)
+![SiliconForge SCMOS alu16 Layout](documentation/images/ic_layout_scmos_alu16.png)
+
+### Full-Chip IC Architecture & Synthesized Block Schematic (`scicore_asic_top`)
+![SciCore-16 Full-Chip IC Schematic](documentation/images/ic_schematic_scicore16.png)
+
+---
+
 ## Architecture Overview (v2.0)
 
 ```mermaid
