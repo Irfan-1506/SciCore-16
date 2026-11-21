@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.6*%
-%TF.CreationDate,2026-11-21T14:54:47+06:00*%
+%TF.CreationDate,2026-11-21T15:56:04+06:00*%
 %TF.ProjectId,scicore16_pcb,73636963-6f72-4653-9136-5f7063622e6b,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.6) date 2026-11-21 14:54:47*
+G04 Created by KiCad (PCBNEW 10.0.6) date 2026-11-21 15:56:04*
 %MOMM*%
 %LPD*%
 G01*
@@ -44,16 +44,16 @@ G04 Aperture macros list end*
 %ADD22R,1.700000X1.000000*%
 G04 APERTURE END LIST*
 D10*
-%TO.C,H*%
+%TO.C,H1*%
 X5000000Y-5000000D03*
 %TD*%
-%TO.C,H*%
+%TO.C,H2*%
 X80000000Y-5000000D03*
 %TD*%
-%TO.C,H*%
+%TO.C,H3*%
 X5000000Y-150000000D03*
 %TD*%
-%TO.C,H*%
+%TO.C,H4*%
 X80000000Y-150000000D03*
 %TD*%
 D11*
@@ -142,12 +142,12 @@ X57780000Y-14000000D03*
 %TD*%
 D16*
 %TO.C,D1*%
-X71062500Y-14000000D03*
 X72937500Y-14000000D03*
+X71062500Y-14000000D03*
 %TD*%
 %TO.C,D2*%
-X71062500Y-20000000D03*
 X72937500Y-20000000D03*
+X71062500Y-20000000D03*
 %TD*%
 D17*
 %TO.C,R2*%

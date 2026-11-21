@@ -1,0 +1,887 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-21T15:55:30",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_2-Pad2))",
+            "items": [
+                {
+                    "description": "Pad 2 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 48.75
+                    },
+                    "uuid": "f7415da6-34ee-4ead-a95f-cab203e6195a"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_3-Pad3))",
+            "items": [
+                {
+                    "description": "Pad 3 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 49.25
+                    },
+                    "uuid": "66c63f68-a68b-4386-9500-44c096200577"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_4-Pad4))",
+            "items": [
+                {
+                    "description": "Pad 4 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 49.75
+                    },
+                    "uuid": "5ea502dd-72ab-4095-aec5-58e29436d474"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_7-Pad7))",
+            "items": [
+                {
+                    "description": "Pad 7 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 51.25
+                    },
+                    "uuid": "df023a74-5c90-49b3-bd78-e3500bcb2ee0"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_8-Pad8))",
+            "items": [
+                {
+                    "description": "Pad 8 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 51.75
+                    },
+                    "uuid": "31971e35-2fc8-41fe-8eda-bf614bd78a82"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_9-Pad9))",
+            "items": [
+                {
+                    "description": "Pad 9 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 52.25
+                    },
+                    "uuid": "9e5f8a31-7abd-4434-810f-610548fc336d"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_10-Pad10))",
+            "items": [
+                {
+                    "description": "Pad 10 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 52.75
+                    },
+                    "uuid": "03643d15-d79a-48ed-a0a4-b42f00291675"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_11-Pad11))",
+            "items": [
+                {
+                    "description": "Pad 11 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 53.25
+                    },
+                    "uuid": "4bfe8cc8-30ed-432f-84d7-573373ba2cf0"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_12-Pad12))",
+            "items": [
+                {
+                    "description": "Pad 12 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 53.75
+                    },
+                    "uuid": "ecfc6114-3ef5-46d7-b008-b528371710c4"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_13-Pad13))",
+            "items": [
+                {
+                    "description": "Pad 13 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 54.25
+                    },
+                    "uuid": "cafccfd6-e74b-4810-8aad-a69f1294d7b3"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_14-Pad14))",
+            "items": [
+                {
+                    "description": "Pad 14 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 54.75
+                    },
+                    "uuid": "2faf4e50-7465-4c4b-9b60-85a4c9e700e6"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_15-Pad15))",
+            "items": [
+                {
+                    "description": "Pad 15 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 55.25
+                    },
+                    "uuid": "f19327c3-e622-4d8a-b5f2-ea29fc3207da"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_16-Pad16))",
+            "items": [
+                {
+                    "description": "Pad 16 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.0875,
+                        "y": 55.75
+                    },
+                    "uuid": "8fb54250-71f1-49dc-9616-4cc39cc09eb7"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_18-Pad18))",
+            "items": [
+                {
+                    "description": "Pad 18 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 39.25,
+                        "y": 56.4125
+                    },
+                    "uuid": "2f8690fd-29b7-4a5b-a7f8-66f1d9f3a590"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_19-Pad19))",
+            "items": [
+                {
+                    "description": "Pad 19 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 39.75,
+                        "y": 56.4125
+                    },
+                    "uuid": "90326863-7a35-4242-a7bb-66537098c737"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_32-Pad32))",
+            "items": [
+                {
+                    "description": "Pad 32 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.25,
+                        "y": 56.4125
+                    },
+                    "uuid": "5239f7e2-d14f-4425-8fd3-8d718c6e8c0c"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_33-Pad33))",
+            "items": [
+                {
+                    "description": "Pad 33 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 55.75
+                    },
+                    "uuid": "f65f6963-178d-4693-b0fb-acbded1992f3"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_34-Pad34))",
+            "items": [
+                {
+                    "description": "Pad 34 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 55.25
+                    },
+                    "uuid": "7fd4d537-620c-4567-ba79-f385d723a5a6"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_35-Pad35))",
+            "items": [
+                {
+                    "description": "Pad 35 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 54.75
+                    },
+                    "uuid": "90d69557-9df8-4e6c-aa4b-bc02e427c19c"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_36-Pad36))",
+            "items": [
+                {
+                    "description": "Pad 36 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 54.25
+                    },
+                    "uuid": "0ed759bb-0ce9-4857-92d9-23f0aca00533"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_37-Pad37))",
+            "items": [
+                {
+                    "description": "Pad 37 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 53.75
+                    },
+                    "uuid": "0af6357f-fea3-443f-9d24-0bef7662913e"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_38-Pad38))",
+            "items": [
+                {
+                    "description": "Pad 38 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 53.25
+                    },
+                    "uuid": "982a27ed-f3a7-4f37-b00b-11079560c870"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_39-Pad39))",
+            "items": [
+                {
+                    "description": "Pad 39 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 52.75
+                    },
+                    "uuid": "1422b6d7-fad5-4bd5-8917-1e8a64566379"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_42-Pad42))",
+            "items": [
+                {
+                    "description": "Pad 42 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 51.25
+                    },
+                    "uuid": "ea96e926-9147-49e4-97f3-8bf0f04cef83"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_43-Pad43))",
+            "items": [
+                {
+                    "description": "Pad 43 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 50.75
+                    },
+                    "uuid": "c8cc7491-6f21-4e13-aca3-1283620ee7e2"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_46-Pad46))",
+            "items": [
+                {
+                    "description": "Pad 46 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 49.25
+                    },
+                    "uuid": "59c45b32-d30c-4ae7-a90a-60384a1f9183"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_47-Pad47))",
+            "items": [
+                {
+                    "description": "Pad 47 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 48.75
+                    },
+                    "uuid": "3e095dec-c563-4a51-9520-e989f2153d2e"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_48-Pad48))",
+            "items": [
+                {
+                    "description": "Pad 48 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.9125,
+                        "y": 48.25
+                    },
+                    "uuid": "abeebaee-f859-4317-bced-a30f9d194836"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_49-Pad49))",
+            "items": [
+                {
+                    "description": "Pad 49 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 46.25,
+                        "y": 47.5875
+                    },
+                    "uuid": "4c1cb452-071d-46d6-b379-5fe145864a79"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_50-Pad50))",
+            "items": [
+                {
+                    "description": "Pad 50 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 45.75,
+                        "y": 47.5875
+                    },
+                    "uuid": "4a38fbb6-62c0-4f4c-b576-47c77d59ef26"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_57-Pad57))",
+            "items": [
+                {
+                    "description": "Pad 57 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 42.25,
+                        "y": 47.5875
+                    },
+                    "uuid": "91d255d9-097c-4624-be93-317b1f7c1f70"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_58-Pad58))",
+            "items": [
+                {
+                    "description": "Pad 58 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 41.75,
+                        "y": 47.5875
+                    },
+                    "uuid": "1bb46596-c722-4b3f-8ae9-566f37586fa9"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_59-Pad59))",
+            "items": [
+                {
+                    "description": "Pad 59 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 41.25,
+                        "y": 47.5875
+                    },
+                    "uuid": "811aa792-f8d7-42e2-844b-f6255959c32f"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_60-Pad60))",
+            "items": [
+                {
+                    "description": "Pad 60 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 40.75,
+                        "y": 47.5875
+                    },
+                    "uuid": "42cbc2dc-781c-44b3-95bf-658783b5b83f"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_61-Pad61))",
+            "items": [
+                {
+                    "description": "Pad 61 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 40.25,
+                        "y": 47.5875
+                    },
+                    "uuid": "8614f8ac-0e4a-4434-88be-4ce76cc8b993"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_62-Pad62))",
+            "items": [
+                {
+                    "description": "Pad 62 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 39.75,
+                        "y": 47.5875
+                    },
+                    "uuid": "455224d0-c4ae-4047-bb9a-d5b913a88696"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_63-Pad63))",
+            "items": [
+                {
+                    "description": "Pad 63 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 39.25,
+                        "y": 47.5875
+                    },
+                    "uuid": "3ce4028f-d596-4558-8e64-6b5d6806ecb9"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(U1-Pin_64-Pad64))",
+            "items": [
+                {
+                    "description": "Pad 64 [<no net>] of U1 on F.Cu",
+                    "pos": {
+                        "x": 38.75,
+                        "y": 47.5875
+                    },
+                    "uuid": "019ca53b-7fdc-4ffa-9a3a-89b99f81e2af"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 65 [/GND] of U1 on F.Cu",
+                    "pos": {
+                        "x": 42.5,
+                        "y": 52.0
+                    },
+                    "uuid": "cb180645-4a0f-400f-ba41-da1ff67f7e3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 1 [/GND] of U2 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 35.7
+                    },
+                    "uuid": "0ddf97ea-84ff-4678-b6da-ec384397d8d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 2 [/+3V3] of U2 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 38.0
+                    },
+                    "uuid": "7f61e1e2-ae14-453c-8894-eae6db659585"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 2 [/+3V3] of U2 on F.Cu",
+                    "pos": {
+                        "x": 21.15,
+                        "y": 38.0
+                    },
+                    "uuid": "d4c672f0-5ea2-4dc3-b7ca-2b7228ecc651"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 3 [/+5V] of U2 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 40.3
+                    },
+                    "uuid": "27100eb9-cad1-4afa-975a-505430909f70"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 1 [/GND] of U3 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 51.7
+                    },
+                    "uuid": "68670f5c-6408-4abd-864e-21a2f3ee03dc"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 2 [/+1V8] of U3 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 54.0
+                    },
+                    "uuid": "d42864c5-92db-4dd8-a8de-83e0f08d10c2"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 2 [/+1V8] of U3 on F.Cu",
+                    "pos": {
+                        "x": 21.15,
+                        "y": 54.0
+                    },
+                    "uuid": "3f9663d2-33ab-476d-adee-64e520d39915"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "No corresponding pin found in schematic",
+            "items": [
+                {
+                    "description": "Pad 3 [/+3V3] of U3 on F.Cu",
+                    "pos": {
+                        "x": 14.85,
+                        "y": 56.3
+                    },
+                    "uuid": "4afe81b2-ce2b-4a9c-ae2f-da512237a376"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad missing net given by schematic (unconnected-(Y1-EN-Pad1))",
+            "items": [
+                {
+                    "description": "Pad 1 [<no net>] of Y1 on F.Cu",
+                    "pos": {
+                        "x": 28.45,
+                        "y": 47.825
+                    },
+                    "uuid": "5c7c8d79-d908-41e0-974b-b9c137a95e2e"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        }
+    ],
+    "source": "scicore16_pcb.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'",
+            "items": [
+                {
+                    "description": "Footprint H1",
+                    "pos": {
+                        "x": 5.0,
+                        "y": 5.0
+                    },
+                    "uuid": "17ba8489-6889-4a6f-ba6c-0a9dd80ba8bd"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'",
+            "items": [
+                {
+                    "description": "Footprint H2",
+                    "pos": {
+                        "x": 80.0,
+                        "y": 5.0
+                    },
+                    "uuid": "b0c0c275-70ca-49dc-9d7d-60bc794a3d9d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'",
+            "items": [
+                {
+                    "description": "Footprint H3",
+                    "pos": {
+                        "x": 5.0,
+                        "y": 150.0
+                    },
+                    "uuid": "ea9a9ae6-639a-488d-b263-d43ab3890691"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'",
+            "items": [
+                {
+                    "description": "Footprint H4",
+                    "pos": {
+                        "x": 80.0,
+                        "y": 150.0
+                    },
+                    "uuid": "1803fbcf-44a3-47a1-84af-e3237df45fc8"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'PinHeader_1x08_P2.54mm_Vertical' does not match copy in library 'Connector_PinHeader_2.54mm'",
+            "items": [
+                {
+                    "description": "Footprint J3",
+                    "pos": {
+                        "x": 40.0,
+                        "y": 14.0
+                    },
+                    "uuid": "752941eb-1f68-4882-abf5-6c8f3a917343"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'LED_0805_2012Metric' does not match copy in library 'LED_SMD'",
+            "items": [
+                {
+                    "description": "Footprint D1",
+                    "pos": {
+                        "x": 72.0,
+                        "y": 14.0
+                    },
+                    "uuid": "3840eebe-275a-42f2-8c53-a2ac0bdaeb18"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'LED_0805_2012Metric' does not match copy in library 'LED_SMD'",
+            "items": [
+                {
+                    "description": "Footprint D2",
+                    "pos": {
+                        "x": 72.0,
+                        "y": 20.0
+                    },
+                    "uuid": "12a775f6-dd45-4d19-9e6e-44c0d3e28561"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1",
+                    "pos": {
+                        "x": 42.5,
+                        "y": 49.5
+                    },
+                    "uuid": "95d36c88-7d80-4e05-b25a-19aeb2279ebc"
+                },
+                {
+                    "description": "Pad 65 [/GND] of U1 on F.Cu",
+                    "pos": {
+                        "x": 42.5,
+                        "y": 52.0
+                    },
+                    "uuid": "cb180645-4a0f-400f-ba41-da1ff67f7e3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}
