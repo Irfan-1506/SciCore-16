@@ -1,6 +1,8 @@
-// SciCore-16 v2.0: SPI Display Controller (128x64 Graphical LCD Interface)
-// Shifts 16-bit Q8.8 result MSB-first over SPI Mode 0 when update_valid pulses.
-module display_controller (
+// SciCore-16 v2.1: 16-bit SPI Result Shifter (Task 2.5 — honestly scoped)
+// Shifts raw 16-bit Q8.8 result MSB-first over SPI Mode 0 when update_valid pulses.
+// Note: Does NOT implement a 128x64 graphical LCD framebuffer or font ROM;
+// drives an external SPI display bridge / MCU on the DISP_* header.
+module spi_result_shifter (
     input         clk,
     input         rst,
     input         update_valid,
@@ -13,7 +15,9 @@ module display_controller (
     output        disp_bl,
     output reg    busy
 );
+    /* verilator lint_off UNUSEDSIGNAL */
     reg [15:0] shift_reg;
+    /* verilator lint_on UNUSEDSIGNAL */
     reg [4:0]  bit_cnt;
     reg        phase;
 
