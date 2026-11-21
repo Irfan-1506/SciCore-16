@@ -1,0 +1,21 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: SciCore-16 Power Integrity & Reset Startup
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using transient initial conditions
+
+No. of Data Rows : 445
+v3v3_steady         =  3.296991e+00
+v1v8_steady         =  1.799286e+00
+v1v8_min_droop      =  1.796882e+00 at=  2.006040e-03
+t_reset_release     =  7.248738e-04
+=== SciCore-16 Power & Reset Metrics ===
+v3v3_steady = 3.296991e+00
+v1v8_steady = 1.799286e+00
+v1v8_min_droop = 1.796882e+00
+t_reset_release = 7.248738e-04
+ngspice-42 done
